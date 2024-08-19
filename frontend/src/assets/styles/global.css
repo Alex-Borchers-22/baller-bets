@@ -1,0 +1,22 @@
+:root {
+  --color0: #f1f1f1;
+  --color1: #c9dabf;
+  --color2: #9ca986;
+  --color3: #808d7c;
+  --color4: #5f6f65;
+}
+
+.navbar-main {
+  background-color: var(--color4) !important;
+  color: var(--color0) !important;
+}
+
+.main_container {
+  background-color: var(--color0);
+  color: var(--color4);
+  min-height: 100vh;
+}
+
+.container_content {
+  padding: 0.5rem;
+}
