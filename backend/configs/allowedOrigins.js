@@ -4,6 +4,7 @@ const allowedOrigins = [
   "http://localhost:8000",
   "http://[::1]",
   "https://main--baller-bets.netlify.app/",
+  "https://main--baller-bets.netlify.app",
 ];
 
 module.exports = allowedOrigins;
