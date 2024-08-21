@@ -10,22 +10,18 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import logo from "../assets/images/BallerBetsLogo1.jpg";
+import logo from "../../assets/images/BallerBetsLogo1.jpg";
 import { Avatar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const PrimarySearchAppBar = () => {
+const PrivateNavBar = () => {
   // Get user from local storage
-  // const user = JSON.parse(localStorage.getItem("user"));
-  const user = {
-    id: 1,
-    email: "alexmborchers@gmail.com",
-    first_name: "Alex",
-    last_name: "Borchers",
-    full_name: "Alex Borchers",
-    username: "alexborchers22",
-    money: 50,
-  };
+  const user = JSON.parse(localStorage.getItem("bb_user"));
 
+  // Get navigate
+  const navigate = useNavigate();
+
+  // Handle account click
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -49,6 +45,13 @@ const PrimarySearchAppBar = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  // Handle user logout
+  const handleLogout = () => {
+    localStorage.removeItem("bb_user");
+    localStorage.removeItem("bb_token");
+    window.location = "/login";
+  };
+
   // Define menu
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -67,8 +70,18 @@ const PrimarySearchAppBar = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <AccountCircle
+          sx={{
+            mr: 1,
+          }}
+        />
+        Profile (Not Implemented)
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        My account (Not Implemented)
+      </MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 
@@ -149,7 +162,7 @@ const PrimarySearchAppBar = () => {
               <AccountCircle />
             </IconButton>
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          {/* <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -160,7 +173,7 @@ const PrimarySearchAppBar = () => {
             >
               <MoreIcon />
             </IconButton>
-          </Box>
+          </Box> */}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
@@ -169,4 +182,4 @@ const PrimarySearchAppBar = () => {
   );
 };
 
-export default PrimarySearchAppBar;
+export default PrivateNavBar;

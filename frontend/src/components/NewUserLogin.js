@@ -7,10 +7,16 @@ import usersService from "../services/users";
 const NewUserLogin = () => {
   const formik = useFormik({
     initialValues: {
+      first_name: "",
+      last_name: "",
+      username: "",
       email: "",
       password: "",
     },
     validationSchema: Yup.object({
+      first_name: Yup.string().required("Required"),
+      last_name: Yup.string().required("Required"),
+      username: Yup.string().required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
       password: Yup.string()
         .min(6, "Password must be at least 6 characters")
@@ -19,7 +25,7 @@ const NewUserLogin = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
       try {
-        const result = await usersService.create(values.email, values.password);
+        const result = await usersService.create(values);
         if (result.success) {
           // Handle successful account creation
         } else {
@@ -42,6 +48,42 @@ const NewUserLogin = () => {
         <Typography variant="h5" gutterBottom>
           Create New Account
         </Typography>
+        <TextField
+          fullWidth
+          id="first_name"
+          name="first_name"
+          label="First Name"
+          value={formik.values.first_name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.first_name && Boolean(formik.errors.first_name)}
+          helperText={formik.touched.first_name && formik.errors.first_name}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          id="last_name"
+          name="last_name"
+          label="Last Name"
+          value={formik.values.last_name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.last_name && Boolean(formik.errors.last_name)}
+          helperText={formik.touched.last_name && formik.errors.last_name}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          id="username"
+          name="username"
+          label="User Name"
+          value={formik.values.username}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.username && Boolean(formik.errors.username)}
+          helperText={formik.touched.username && formik.errors.username}
+          margin="normal"
+        />
         <TextField
           fullWidth
           id="email"

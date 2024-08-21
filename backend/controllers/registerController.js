@@ -8,37 +8,33 @@
  *
  *****************/
 const bcrypt = require("bcrypt");
-const yup = require("yup");
-const {
-  getUserByEmail,
-  addUser,
-  updateUserPassword,
-} = require("../services/usr/users");
+const { getUserByEmailOrUsername, createUser } = require("../services/users");
 
 // Define the schema for the user object
-const userSchema = yup.object().shape({
-  first_name: yup.string().required(),
-  last_name: yup.string().required(),
-  email: yup.string().email().required(),
-  is_active: yup.boolean().required(),
-  usr_permissions_id: yup.number().required(),
-  // supervisor_id: yup.number().required(),
-});
+// const userSchema = yup.object().shape({
+//   first_name: yup.string().required(),
+//   last_name: yup.string().required(),
+//   email: yup.string().email().required(),
+//   is_active: yup.boolean().required(),
+//   usr_permissions_id: yup.number().required(),
+//   // supervisor_id: yup.number().required(),
+// });
 
 const handleNewUser = async (req, res) => {
   // Verify email and password are provided
   const user = req.body;
+  console.log("user", user);
   // Validate user object
-  try {
-    await userSchema.validate(user);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-    return;
-  }
+  // try {
+  //   await userSchema.validate(user);
+  // } catch (err) {
+  //   res.status(400).json({ message: err.message });
+  //   return;
+  // }
 
   // Check for existing user (by email)
   // console.log(email);
-  const duplicate = await getUserByEmail(user.email);
+  const duplicate = await getUserByEmailOrUsername(user.email, user.username);
   // console.log("duplicate", duplicate);
   if (duplicate) {
     // @TODO move to seperate function
@@ -47,7 +43,7 @@ const handleNewUser = async (req, res) => {
     // updateUserPassword(duplicate.id, hashedPwd);
     // res.status(201).json({ success: `Password Updated.` });
 
-    res.status(409).json({ message: "Email already exists." }); // Conflict
+    res.status(409).json({ message: "Username or Email already exists." }); // Conflict
     return;
   }
   try {
@@ -58,7 +54,7 @@ const handleNewUser = async (req, res) => {
     }
 
     // Store new user
-    const newUser = await addUser(user);
+    const newUser = await createUser(user);
 
     res.status(201).json(newUser);
   } catch (err) {

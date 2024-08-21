@@ -12,6 +12,8 @@ const router = express.Router(); // Express router object for routing requests
 
 // Import your service here
 const usersService = require("../services/users");
+const authController = require("../controllers/authController");
+const registerController = require("../controllers/registerController");
 
 // =============== SERVER GET REQUESTS ======================== //
 
@@ -41,11 +43,12 @@ router.get("/:id", async (req, res) => {
 // Check user credentials
 router.post("/auth", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    console.log(email);
-    console.log(password);
-    const result = await usersService.authUser(email, password);
-    res.json(result);
+    return await authController.handleLogin(req, res);
+    // const { email, password } = req.body;
+    // console.log(email);
+    // console.log(password);
+    // const result = await usersService.authUser(email, password);
+    // res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server Error" });
@@ -55,8 +58,9 @@ router.post("/auth", async (req, res) => {
 // Create a new user
 router.post("/", async (req, res) => {
   try {
-    const result = await usersService.createUser(req.body);
-    res.json(result);
+    return await registerController.handleNewUser(req, res);
+    // const result = await usersService.createUser(req.body);
+    // res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server Error" });

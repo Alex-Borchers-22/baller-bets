@@ -20,9 +20,9 @@ const {
 
 const handleLogin = async (req, res) => {
   // If oauth_provider is set, handle oauth login
-  if (req.body.oauth_provider && req.body.oauth_provider !== "") {
-    return handleOAuthLogin(req, res);
-  }
+  // if (req.body.oauth_provider && req.body.oauth_provider !== "") {
+  //   return handleOAuthLogin(req, res);
+  // }
 
   const { email, password } = req.body;
   if (!email || !password) {
@@ -45,7 +45,7 @@ const handleLogin = async (req, res) => {
     // Create JWT tokens and send to client
     createTokens(foundUser, res);
   } else {
-    return res.sendStatus(401);
+    return res.sendStatus(401).json({ message: "Invalid password." });
   }
 };
 
@@ -121,7 +121,7 @@ const createTokens = async (user, res) => {
   // console.log("accessToken: ", accessToken);
 
   // Get Tenant Info
-  const tenantInfo = await getTenantInfo();
+  // const tenantInfo = await getTenantInfo();
   // console.log("tenantInfo: ", tenantInfo);
 
   // Send refresh back (set for 1 day)
@@ -140,23 +140,10 @@ const createTokens = async (user, res) => {
   //   maxAge: 1000 * 60 * 60 * 24,
   // });
 
-  // Only return certain fields to client
-  const userAbv = {
-    id: user.id,
-    email: user.email,
-    full_name: user.full_name,
-    picture: user.picture,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    flg_financial: user.flg_financial,
-    flg_action: user.flg_action,
-    flg_edit: user.flg_edit,
-  };
   // res.json({ accessToken: accessToken, user: JSON.stringify(userAbv) });
   res.json({
     accessToken: accessToken,
     user: JSON.stringify(user),
-    company: JSON.stringify(tenantInfo),
   });
 };
 

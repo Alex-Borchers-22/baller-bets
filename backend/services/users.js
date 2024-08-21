@@ -23,20 +23,23 @@ async function getUserById(id) {
   return users[0];
 }
 
-// Authenticate user
-async function authUser(email, password) {
+// Get user by email
+async function getUserByEmail(email) {
   const query = `SELECT id FROM users WHERE email = ?`;
-  const users = await db.executeQuery(query, [email]);
-  if (users.length === 0) {
-    return {
-      success: false,
-      message: "User does not exist",
-    };
-  } else {
-    const id = users[0].id;
-    const user = getUserById(id);
-    return user;
+  const user = await db.executeQuery(query, [email]);
+  if (user.length === 0) {
+    return null;
   }
+  const id = user[0].id;
+  return await getUserById(id);
+}
+
+// Get user by OAuth ID
+async function getUserByOAuthId(oauth_id) {
+  // const query = `SELECT * FROM users WHERE oauth_id = ?`;
+  // const users = await db.executeQuery(query, [oauth_id]);
+  // return users[0];
+  throw new Error("Not implemented");
 }
 
 // Get user by email or username
@@ -86,6 +89,21 @@ async function updateUser(id, user) {
   return result;
 }
 
+// Update a user's refresh token
+async function updateRefreshToken(id, refresh_token) {
+  const query = `UPDATE users SET refresh_token = ? WHERE id = ?`;
+  const result = await db.executeQuery(query, [refresh_token, id]);
+  return result;
+}
+
+// Update a user's provider info
+async function updateProviderInfo(id, provider_info) {
+  // const query = `UPDATE users SET provider_info = ? WHERE id = ?`;
+  // const result = await db.executeQuery(query, [provider_info, id]);
+  // return result;
+  throw new Error("Not implemented");
+}
+
 // Delete a user
 async function deleteUser(id) {
   const query = `DELETE FROM users WHERE id = ?`;
@@ -97,10 +115,14 @@ async function deleteUser(id) {
 
 module.exports = {
   getAllUsers,
+  getUserByEmail,
+  getUserByEmailOrUsername,
+  getUserByOAuthId,
   getUserById,
-  authUser,
   createUser,
   updateUser,
+  updateRefreshToken,
+  updateProviderInfo,
   deleteUser,
   // Define other functions here
 };

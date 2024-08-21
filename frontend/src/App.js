@@ -9,12 +9,15 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 // Import components
+import PathReroute from "./components/Auth/PathReroute";
+import NavBar from "./components/NavBar/NavBar";
+import RequireAuth from "./components/Auth/RequireAuth";
 import DailyLinesSearch from "./components/DailyLinesSearch";
 import UserLogin from "./components/UserLogin";
 import NewUserLogin from "./components/NewUserLogin";
 
-// Include NavBar component
-import NavBar from "./components/NavBar";
+// Import toastr css
+import "toastr/build/toastr.min.css";
 
 // Bootstrap styles
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -32,10 +35,18 @@ function App() {
           <Routes>
             {/* Add a parent route */}
             <Route path="/" element={<Outlet />}>
-              <Route index element={<UserLogin />} />
-              <Route path="login" element={<UserLogin />} />
-              <Route path="register" element={<NewUserLogin />} />
-              <Route path="daily_lines" element={<DailyLinesSearch />} />
+              {/* Reroute certain paths if user is logged in */}
+              <Route element={<PathReroute />}>
+                {/* Public routes */}
+                <Route index element={<UserLogin />} />
+                <Route path="login" element={<UserLogin />} />
+                <Route path="register" element={<NewUserLogin />} />
+
+                {/* Private routes */}
+                <Route element={<RequireAuth />}>
+                  <Route path="daily_lines" element={<DailyLinesSearch />} />
+                </Route>
+              </Route>
             </Route>
           </Routes>
         </div>

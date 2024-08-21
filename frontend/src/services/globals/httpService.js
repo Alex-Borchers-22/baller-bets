@@ -24,6 +24,8 @@ class HttpService {
         // Log the user out
         logout();
       }
+      console.error(error);
+      return error.response ? error.response : error;
     }
   };
 
@@ -38,6 +40,8 @@ class HttpService {
         // Log the user out
         logout();
       }
+      console.error(error);
+      return error.response ? error.response : error;
     }
   };
 
@@ -52,6 +56,8 @@ class HttpService {
         // Log the user out
         logout();
       }
+      console.error(error);
+      return error.response ? error.response : error;
     }
   };
 
@@ -66,6 +72,8 @@ class HttpService {
         // Log the user out
         logout();
       }
+      console.error(error);
+      return error.response ? error.response : error;
     }
   };
 
@@ -80,6 +88,8 @@ class HttpService {
         // Log the user out
         logout();
       }
+      console.error(error);
+      return error.response ? error.response : error;
     }
   };
 }

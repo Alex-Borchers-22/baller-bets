@@ -9,16 +9,17 @@
 import axios from "axios";
 
 const instance = axios.create({
-  // baseURL: process.env.REACT_APP_API_URL,
-  baseURL: "https://baller-bets.onrender.com/",
+  baseURL: process.env.REACT_APP_API_URL,
+  // baseURL: "https://baller-bets.onrender.com/",
   withCredentials: true,
 });
 
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("bb_token");
     if (token) {
       // Decode token using atob() function
+      console.log(token);
       const decodedToken = atob(token);
       config.headers.Authorization = `Bearer ${decodedToken}`;
     }

@@ -4,8 +4,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import usersService from "../services/users";
 import toastr from "toastr";
+import { setUserCredentials } from "../utils/setUserCredentials";
+import { useNavigate } from "react-router-dom";
 
 const UserLogin = () => {
+  // Get navigate
+  const navigate = useNavigate();
+
+  // Setup formik
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -13,21 +19,32 @@ const UserLogin = () => {
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Invalid email address").required("Required"),
-      //   password: Yup.string()
-      //     .min(6, "Password must be at least 6 characters")
-      //     .required("Required"),
+      password: Yup.string()
+        .min(6, "Password must be at least 6 characters")
+        .required("Required"),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       console.log(values);
       setSubmitting(true);
       try {
         const result = await usersService.auth(values.email, values.password);
-        console.log(result.data.message);
-        if (result && result.data.message) {
-          toastr.warning(result.data.message);
-        } else if (result.data) {
-          toastr.success("Login Successful");
-          window.location.href = "/daily_lines";
+        console.log(result);
+        if (result) {
+          if (result.data && result.data.status === 401) {
+            toastr.error("Password is incorrect");
+          } else if (result.data && result.data.status === 404) {
+            toastr.error("User not found");
+          } else if (result.data && result.data.status === 500) {
+            toastr.error("Server Error");
+          } else if (result.data && result.data.status === 409) {
+            toastr.error("Username or Email already exists.");
+          } else if (result.data) {
+            toastr.success("Login Successful");
+            const { user, accessToken } = result.data;
+            setUserCredentials(user, accessToken);
+            // navigate("/daily_lines");
+            window.location = "/daily_lines";
+          }
         } else {
           throw new Error("Login Failed");
         }
@@ -61,7 +78,7 @@ const UserLogin = () => {
           helperText={formik.touched.email && formik.errors.email}
           margin="normal"
         />
-        {/* <TextField
+        <TextField
           fullWidth
           id="password"
           name="password"
@@ -73,7 +90,7 @@ const UserLogin = () => {
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
           margin="normal"
-        /> */}
+        />
         <Button
           color="primary"
           variant="contained"

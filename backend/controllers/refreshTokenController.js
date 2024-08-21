@@ -8,7 +8,7 @@
  *****************/
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const { getUserByRefreshToken } = require("../services/usr/users");
+const { getUserByRefreshToken } = require("../services/users");
 
 const handleRefreshToken = async (req, res) => {
   const cookies = req.cookies;
