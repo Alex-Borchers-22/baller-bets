@@ -4,7 +4,7 @@ import PublicNavBar from "./PublicNavBar";
 
 // NavBar component
 const NavBar = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("bb_user")));
+  const [user, setUser] = useState(null);
   useEffect(() => {
     const localUser = localStorage.getItem("bb_user");
     if (localUser) {
