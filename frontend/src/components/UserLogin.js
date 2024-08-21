@@ -5,12 +5,8 @@ import * as Yup from "yup";
 import usersService from "../services/users";
 import toastr from "toastr";
 import { setUserCredentials } from "../utils/setUserCredentials";
-import { useNavigate } from "react-router-dom";
 
 const UserLogin = () => {
-  // Get navigate
-  const navigate = useNavigate();
-
   // Setup formik
   const formik = useFormik({
     initialValues: {

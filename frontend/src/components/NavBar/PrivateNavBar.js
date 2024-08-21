@@ -9,17 +9,16 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import logo from "../../assets/images/BallerBetsLogo1.jpg";
 import { Avatar } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const PrivateNavBar = () => {
   // Get user from local storage
   const user = JSON.parse(localStorage.getItem("bb_user"));
 
   // Get navigate
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Handle account click
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -41,9 +40,9 @@ const PrivateNavBar = () => {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+  // const handleMobileMenuOpen = (event) => {
+  //   setMobileMoreAnchorEl(event.currentTarget);
+  // };
 
   // Handle user logout
   const handleLogout = () => {
