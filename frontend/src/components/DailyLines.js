@@ -5,7 +5,6 @@ import GameCard from "./GameCard";
 const DailyLines = ({ dailyLines }) => {
   return (
     <div>
-      <h2>Daily Lines</h2>
       {dailyLines.map((line) => (
         <div key={line.id}>
           <GameCard game={line} />

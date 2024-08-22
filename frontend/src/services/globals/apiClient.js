@@ -19,7 +19,6 @@ instance.interceptors.request.use(
     const token = localStorage.getItem("bb_token");
     if (token) {
       // Decode token using atob() function
-      console.log(token);
       const decodedToken = atob(token);
       config.headers.Authorization = `Bearer ${decodedToken}`;
     }

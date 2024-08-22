@@ -11,21 +11,25 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import logo from "../../assets/images/BallerBetsLogo1.jpg";
 import { Avatar } from "@mui/material";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const PrivateNavBar = () => {
+  // Get navigate
+  const navigate = useNavigate();
+
   // Get user from local storage
   const user = JSON.parse(localStorage.getItem("bb_user"));
 
-  // Get navigate
-  // const navigate = useNavigate();
-
-  // Handle account click
+  // State for account menu
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
+  // State for hamburger menu
+  const [hamburgerAnchorEl, setHamburgerAnchorEl] = React.useState(null);
+
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isHamburgerMenuOpen = Boolean(hamburgerAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -40,9 +44,13 @@ const PrivateNavBar = () => {
     handleMobileMenuClose();
   };
 
-  // const handleMobileMenuOpen = (event) => {
-  //   setMobileMoreAnchorEl(event.currentTarget);
-  // };
+  const handleHamburgerMenuOpen = (event) => {
+    setHamburgerAnchorEl(event.currentTarget);
+  };
+
+  const handleHamburgerMenuClose = () => {
+    setHamburgerAnchorEl(null);
+  };
 
   // Handle user logout
   const handleLogout = () => {
@@ -51,7 +59,13 @@ const PrivateNavBar = () => {
     window.location = "/login";
   };
 
-  // Define menu
+  // Handle route to daily lines
+  const handeReroute = (route) => {
+    navigate(route);
+    handleHamburgerMenuClose();
+  };
+
+  // Define account menu
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -123,6 +137,41 @@ const PrivateNavBar = () => {
     </Menu>
   );
 
+  // Define hamburger menu
+  const hamburgerMenuId = "hamburger-menu";
+  const renderHamburgerMenu = (
+    <Menu
+      anchorEl={hamburgerAnchorEl}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+      id={hamburgerMenuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "left",
+      }}
+      open={isHamburgerMenuOpen}
+      onClose={handleHamburgerMenuClose}
+    >
+      <MenuItem
+        onClick={() => {
+          handeReroute("daily_lines");
+        }}
+      >
+        Daily Lines
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          handeReroute("marketplace");
+        }}
+      >
+        Marketplace
+      </MenuItem>
+    </Menu>
+  );
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" className="navbar-main">
@@ -135,13 +184,14 @@ const PrivateNavBar = () => {
             edge="start"
             color="inherit"
             aria-label="open drawer"
+            onClick={handleHamburgerMenuOpen}
           >
             <MenuIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Typography variant="body1" sx={{ mr: 2, color: "lime" }}>
-              ${user.money}
+              {/* <UserMoney /> */}${user.money}
             </Typography>
             <Typography
               variant="body1"
@@ -161,20 +211,9 @@ const PrivateNavBar = () => {
               <AccountCircle />
             </IconButton>
           </Box>
-          {/* <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box> */}
         </Toolbar>
       </AppBar>
+      {renderHamburgerMenu}
       {renderMobileMenu}
       {renderMenu}
     </Box>

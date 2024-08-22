@@ -19,6 +19,19 @@ const DailyLinesSearch = () => {
     setDailyLines(response.data);
   };
 
+  // Handle search
+  const handleSearch = (e) => {
+    const search = e.target.value;
+    if (search === "") {
+      setDailyLines(allLines);
+    } else {
+      const filteredLines = allLines.filter((line) =>
+        line.game.toLowerCase().includes(search.toLowerCase())
+      );
+      setDailyLines(filteredLines);
+    }
+  };
+
   // Handle loading state
   if (!dailyLines || !allLines) {
     return <CircularProgress />;

@@ -49,6 +49,9 @@ async function executeQuery(query, params = [], debug = false) {
     // Execute the query
     const [results, fields] = await connection.execute(query, params);
 
+    // Close the connection
+    connection.end();
+
     // Return the results
     return results;
   } catch (err) {

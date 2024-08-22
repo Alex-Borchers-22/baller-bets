@@ -37,6 +37,9 @@ const UserLogin = () => {
           } else if (result.data) {
             toastr.success("Login Successful");
             const { user, accessToken } = result.data;
+            if (!user || !accessToken) {
+              throw new Error("Login Failed");
+            }
             setUserCredentials(user, accessToken);
             // navigate("/daily_lines");
             window.location = "/daily_lines";
@@ -47,6 +50,7 @@ const UserLogin = () => {
       } catch (error) {
         // Handle error
         console.log(error);
+        toastr.error("Login Failed");
       }
       setSubmitting(false);
     },

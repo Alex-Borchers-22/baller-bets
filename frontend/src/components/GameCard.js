@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { red, blue } from "@mui/material/colors";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
+import GameCardBetSlip from "./GameCardBetSlip";
 
 const GameCard = ({ game }) => {
   // Get first letter of word as a capital letter
@@ -24,65 +25,99 @@ const GameCard = ({ game }) => {
     const markets = firstBookmaker.markets;
     const outcomes = markets[0].outcomes;
     if (outcomes[0].name === team) {
-      return formatPrice(outcomes[0].price);
+      return outcomes[0];
     } else {
-      return formatPrice(outcomes[1].price);
+      return outcomes[1];
     }
+  };
+
+  // Get price for first line
+  const getPrice = (game, type) => {
+    const firstLine = getFirstLine(game, type);
+    return formatSpread(firstLine.price);
+  };
+
+  // Get point spread for first line
+  const getPointSpread = (game, type) => {
+    const firstLine = getFirstLine(game, type);
+    return formatSpread(firstLine.point);
   };
 
   // Handles formatting the price on games
-  const formatPrice = (price) => {
-    if (price > 0) {
-      return "+" + price;
+  const formatSpread = (pointSpread) => {
+    if (pointSpread > 0) {
+      return "+" + pointSpread;
     } else {
-      return price;
+      return pointSpread;
     }
   };
 
+  // Format date from UTC to local time
+  const formatDate = (date) => {
+    // Format as MM/DD/YYYY at HH:MM (PM|AM)
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return new Date(date).toLocaleDateString("en-US", options);
+  };
+
+  // Handle state of showing bet slip\
+  const [homeOrAway, setHomeOrAway] = useState(null);
+
+  // Set function to render card header
+  const renderCardHeader = (team, type) => {
+    return (
+      <CardHeader
+        avatar={
+          <Avatar
+            sx={{ bgcolor: type === "home_team" ? red[500] : blue[700] }}
+            aria-label="recipe"
+          >
+            {getFirstLetter(team)}
+          </Avatar>
+        }
+        action={
+          <button
+            className="btn btn-primary"
+            style={{ width: "4em" }}
+            onClick={() => setHomeOrAway(type)}
+          >
+            {getPrice(game, type)}
+          </button>
+        }
+        title={team}
+        subheader={`(${getPointSpread(game, type)})`}
+      />
+    );
+  };
+
   return (
-    <div className="p-2">
-      <Card>
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              {getFirstLetter(game.home_team)}
-            </Avatar>
-          }
-          action={
-            <button className="btn btn-primary" style={{ width: "4em" }}>
-              {getFirstLine(game, "home_team")}
-            </button>
-          }
-          title={game.home_team}
+    <>
+      <div className="p-2">
+        <Card>
+          {renderCardHeader(game.home_team, "home_team")}
+          {renderCardHeader(game.away_team, "away_team")}
+          <CardContent>
+            <Typography variant="body2" color="text.secondary">
+              {formatDate(game.commence_time)}
+            </Typography>
+          </CardContent>
+        </Card>
+      </div>
+      {homeOrAway && (
+        <GameCardBetSlip
+          game={game}
+          choice={homeOrAway}
+          handleClose={() => {
+            setHomeOrAway(null);
+          }}
         />
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: blue[700] }} aria-label="recipe">
-              {getFirstLetter(game.away_team)}
-            </Avatar>
-          }
-          action={
-            <button className="btn btn-primary" style={{ width: "4em" }}>
-              {getFirstLine(game, "away_team")}
-            </button>
-          }
-          title={game.away_team}
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {game.commence_time}
-          </Typography>
-        </CardContent>
-        {/* <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-        </CardActions> */}
-      </Card>
-    </div>
+      )}
+    </>
   );
 };
 

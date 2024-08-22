@@ -20,3 +20,11 @@
 .container_content {
   padding: 0.5rem;
 }
+
+.main_header {
+  background-color: var(--color3);
+  color: var(--color0);
+}
+.main_header .MuiSvgIcon-root {
+  color: var(--color0);
+}
