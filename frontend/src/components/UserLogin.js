@@ -26,13 +26,13 @@ const UserLogin = () => {
         const result = await usersService.auth(values.email, values.password);
         console.log(result);
         if (result) {
-          if (result.data && result.data.status === 401) {
-            toastr.error("Password is incorrect");
-          } else if (result.data && result.data.status === 404) {
+          if (result.data && result.status === 401) {
+            toastr.error("Email / Password is incorrect");
+          } else if (result.data && result.status === 404) {
             toastr.error("User not found");
-          } else if (result.data && result.data.status === 500) {
+          } else if (result.data && result.status === 500) {
             toastr.error("Server Error");
-          } else if (result.data && result.data.status === 409) {
+          } else if (result.data && result.status === 409) {
             toastr.error("Username or Email already exists.");
           } else if (result.data) {
             toastr.success("Login Successful");
@@ -61,7 +61,7 @@ const UserLogin = () => {
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
-        sx={{ mt: 1, width: "100%", maxWidth: 360 }}
+        sx={{ mt: 5, width: "100%", maxWidth: 360 }}
       >
         <Typography variant="h5" gutterBottom>
           User Login
@@ -100,9 +100,6 @@ const UserLogin = () => {
           disabled={formik.isSubmitting}
         >
           Login
-        </Button>
-        <Button color="secondary" fullWidth variant="text" href="/register">
-          Create New Account
         </Button>
       </Box>
     </Grid>

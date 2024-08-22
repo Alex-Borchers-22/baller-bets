@@ -7,6 +7,7 @@ import {
 } from "react-router-dom"; // Import Outlet
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import toastr from "toastr";
 
 // Import components
 import PathReroute from "./components/Auth/PathReroute";
@@ -16,14 +17,33 @@ import DailyLinesSearch from "./components/DailyLinesSearch";
 import UserLogin from "./components/UserLogin";
 import NewUserLogin from "./components/NewUserLogin";
 
-// Import toastr css
-import "toastr/build/toastr.min.css";
-
 // Bootstrap styles
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// Import toastr css
+import "toastr/build/toastr.min.css";
+
 // Global styles
 import "./assets/styles/global.css";
+
+// Set global toastr options
+toastr.options = {
+  closeButton: true,
+  debug: false,
+  newestOnTop: true,
+  progressBar: false,
+  positionClass: "toast-bottom-full-width", // Change position to bottom center
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: "6000",
+  hideDuration: "1000",
+  timeOut: "0", // Set to 0 to make it stay indefinitely
+  extendedTimeOut: "0", // No extended timeout
+  showEasing: "swing",
+  hideEasing: "linear",
+  showMethod: "fadeIn",
+  hideMethod: "fadeOut",
+};
 
 function App() {
   return (

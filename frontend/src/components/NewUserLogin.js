@@ -43,7 +43,7 @@ const NewUserLogin = () => {
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
-        sx={{ mt: 1, width: "100%", maxWidth: 360 }}
+        sx={{ mt: 5, width: "100%", maxWidth: 360 }}
       >
         <Typography variant="h5" gutterBottom>
           Create New Account
@@ -117,9 +117,6 @@ const NewUserLogin = () => {
           disabled={formik.isSubmitting}
         >
           Create Account
-        </Button>
-        <Button color="secondary" fullWidth variant="text" href="/">
-          Back to Login
         </Button>
       </Box>
     </Grid>

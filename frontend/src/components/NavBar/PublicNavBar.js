@@ -36,12 +36,16 @@ const PrivateNavBar = () => {
   // };
 
   // Set public pages
-  const pages_left = ["Home", "About", "Contact"];
+  const pages_left = [
+    "Home (Not implemented)",
+    "About (Not implemented)",
+    "Contact (Not implemented)",
+  ];
   const pages_right = ["Login", "Register"];
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" className="navbar-main">
+      <AppBar position="sticky" className="navbar-main">
         <Toolbar>
           <Typography
             variant="h6"

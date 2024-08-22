@@ -174,7 +174,7 @@ const PrivateNavBar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" className="navbar-main">
+      <AppBar position="sticky" className="navbar-main">
         <Toolbar>
           <Typography variant="h6" noWrap component="div" sx={{ mr: 2 }}>
             <Avatar alt="BallerBets" src={logo} />

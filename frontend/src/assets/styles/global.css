@@ -9,12 +9,14 @@
 .navbar-main {
   background-color: var(--color4) !important;
   color: var(--color0) !important;
+  position: fixed !important;
 }
 
 .main_container {
   background-color: var(--color0);
   color: var(--color4);
-  min-height: 100vh;
+  min-height: 94vh;
+  margin-top: 6vh;
 }
 
 .container_content {
