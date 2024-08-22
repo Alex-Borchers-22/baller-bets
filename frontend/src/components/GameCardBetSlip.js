@@ -1,5 +1,5 @@
 import React from "react";
-import { red, blue } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
@@ -10,7 +10,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Alert from "@mui/material/Alert";
 
 const GameCardBetSlip = ({ game, choice, handleClose }) => {
   // Get first letter of word as a capital letter
