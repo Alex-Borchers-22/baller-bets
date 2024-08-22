@@ -195,7 +195,7 @@ const PrivateNavBar = () => {
             </Typography>
             <Typography
               variant="body1"
-              sx={{ display: { xs: "none", md: "block" } }}
+              sx={{ display: { xs: "block", md: "block" } }}
             >
               {user.username}
             </Typography>

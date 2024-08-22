@@ -36,11 +36,7 @@ const PrivateNavBar = () => {
   // };
 
   // Set public pages
-  const pages_left = [
-    "Home (Not implemented)",
-    "About (Not implemented)",
-    "Contact (Not implemented)",
-  ];
+  const pages_left = ["Home", "About", "Contact"];
   const pages_right = ["Login", "Register"];
 
   return (

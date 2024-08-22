@@ -16,6 +16,7 @@ import RequireAuth from "./components/Auth/RequireAuth";
 import DailyLinesSearch from "./components/DailyLinesSearch";
 import UserLogin from "./components/UserLogin";
 import NewUserLogin from "./components/NewUserLogin";
+import Alert from "@mui/material/Alert";
 
 // Bootstrap styles
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -45,6 +46,16 @@ toastr.options = {
   hideMethod: "fadeOut",
 };
 
+// Get coming soon message
+const ComingSoon = () => {
+  return (
+    <Alert severity="info" variant="outlined" className="m-4">
+      This page is coming soon!
+    </Alert>
+  );
+};
+
+// Main App component
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -61,10 +72,16 @@ function App() {
                 <Route index element={<UserLogin />} />
                 <Route path="login" element={<UserLogin />} />
                 <Route path="register" element={<NewUserLogin />} />
+                <Route path="home" element={<ComingSoon />} />
+                <Route path="about" element={<ComingSoon />} />
+                <Route path="contact" element={<ComingSoon />} />
 
                 {/* Private routes */}
                 <Route element={<RequireAuth />}>
                   <Route path="daily_lines" element={<DailyLinesSearch />} />
+                  <Route path="marketplace" element={<ComingSoon />} />
+                  <Route path="bets" element={<ComingSoon />} />
+                  <Route path="account" element={<ComingSoon />} />
                 </Route>
               </Route>
             </Route>

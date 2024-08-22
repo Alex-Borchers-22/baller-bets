@@ -3,6 +3,8 @@ import { TextField, Button, Grid, Box, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import usersService from "../services/users";
+import toastr from "toastr";
+import { setUserCredentials } from "../utils/setUserCredentials";
 
 const NewUserLogin = () => {
   const formik = useFormik({
@@ -26,13 +28,38 @@ const NewUserLogin = () => {
       setSubmitting(true);
       try {
         const result = await usersService.create(values);
-        if (result.success) {
-          // Handle successful account creation
+        console.log(result);
+        if (result && result.status === 201) {
+          // Let user know the account was created & we are logging them in
+          toastr.info("Account created. Logging in...");
+
+          // Handle successful account creation & login
+          const loginResult = await usersService.auth(
+            values.email,
+            values.password
+          );
+          console.log(loginResult);
+          if (loginResult && loginResult.status === 200) {
+            toastr.success("Login Successful");
+            const { user, accessToken } = loginResult.data;
+            setUserCredentials(user, accessToken);
+            window.location = "/daily_lines";
+          } else {
+            toastr.error("Login Failed");
+            throw new Error(loginResult);
+          }
         } else {
-          // Handle failure
+          if (result && result?.data.message) {
+            toastr.error(result.data.message);
+            throw new Error(result);
+          } else {
+            toastr.error("Account Creation Failed");
+            throw new Error(result);
+          }
         }
       } catch (error) {
         // Handle error
+        console.log(error);
       }
       setSubmitting(false);
     },
