@@ -1,0 +1,8 @@
+Sports betting app
+allows users to bet on sports events. Users can submit a bet or accept a bet on the open market.
+
+Features:
+ - User authentication
+ - Betting market
+ - Betting history
+ - User profile 

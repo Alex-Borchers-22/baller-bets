@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { red } from "@mui/material/colors";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -10,8 +10,42 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { TextField, Button } from "@mui/material";
+import betsService from "../services/betsService";
 
 const GameCardBetSlip = ({ game, choice, handleClose }) => {
+  const [betAmount, setBetAmount] = useState("");
+  const [existingBets, setExistingBets] = useState([]);
+
+  useEffect(() => {
+    fetchExistingBets();
+  }, [game.id]);
+
+  const fetchExistingBets = async () => {
+    try {
+      const bets = await betsService.get(game.id);
+      setExistingBets(bets);
+    } catch (error) {
+      console.error("Error fetching existing bets:", error);
+    }
+  };
+
+  const handlePlaceBet = async () => {
+    try {
+      const newBet = {
+        game_id: game.id,
+        bet_amount: parseFloat(betAmount),
+        user_placed_id: JSON.parse(localStorage.getItem("bb_user")).id,
+        time_placed: new Date().toISOString(),
+      };
+      await betsService.create(newBet);
+      setBetAmount("");
+      fetchExistingBets();
+    } catch (error) {
+      console.error("Error placing bet:", error);
+    }
+  };
+
   // Get first letter of word as a capital letter
   const getFirstLetter = (word) => {
     return word.charAt(0).toUpperCase();
@@ -113,12 +147,36 @@ const GameCardBetSlip = ({ game, choice, handleClose }) => {
             </CardContent>
           </Card>
           <div className="mt-2">
-            <input
+            <TextField
               type="number"
               className="form-control"
               placeholder="Enter Amount"
+              value={betAmount}
+              onChange={(e) => setBetAmount(e.target.value)}
+              fullWidth
             />
-            <button className="btn btn-primary mt-2 w-100">Place Bet</button>
+            <Button
+              className="btn btn-primary mt-2 w-100"
+              onClick={handlePlaceBet}
+            >
+              Place Bet
+            </Button>
+          </div>
+          <div className="mt-4">
+            <Typography variant="h6">Existing Bets</Typography>
+            {existingBets.map((bet) => (
+              <Card key={bet.id} className="mt-2">
+                <CardContent>
+                  <Typography>Amount: ${bet.bet_amount}</Typography>
+                  <Typography>
+                    Placed: {new Date(bet.time_placed).toLocaleString()}
+                  </Typography>
+                  <Typography>
+                    Status: {bet.user_accepted_id ? "Accepted" : "Open"}
+                  </Typography>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </DialogContent>

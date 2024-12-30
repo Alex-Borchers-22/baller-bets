@@ -17,6 +17,10 @@ import DailyLinesSearch from "./components/DailyLinesSearch";
 import UserLogin from "./components/UserLogin";
 import NewUserLogin from "./components/NewUserLogin";
 import Alert from "@mui/material/Alert";
+import BettingMarket from "./components/BettingMarket";
+import Home from "./components/Home";
+import About from "./components/About";
+import Contact from "./components/Contact";
 
 // Bootstrap styles
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -72,14 +76,14 @@ function App() {
                 <Route index element={<UserLogin />} />
                 <Route path="login" element={<UserLogin />} />
                 <Route path="register" element={<NewUserLogin />} />
-                <Route path="home" element={<ComingSoon />} />
-                <Route path="about" element={<ComingSoon />} />
-                <Route path="contact" element={<ComingSoon />} />
+                <Route path="home" element={<Home />} />
+                <Route path="about" element={<About />} />
+                <Route path="contact" element={<Contact />} />
 
                 {/* Private routes */}
                 <Route element={<RequireAuth />}>
                   <Route path="daily_lines" element={<DailyLinesSearch />} />
-                  <Route path="marketplace" element={<ComingSoon />} />
+                  <Route path="marketplace" element={<BettingMarket />} />
                   <Route path="bets" element={<ComingSoon />} />
                   <Route path="account" element={<ComingSoon />} />
                 </Route>
